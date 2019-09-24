@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<form action="/add" method="post">
+<label>
+    Username
+    <input type="text" name="user-id"/>
+</label>
+<br>
+{% if blank_error1 %}
+  <p class='blank_error1'>{{ blank_error1 }}</p>
+{% endif %}
+
+
+<label>
+    Password
+    <input type="text" name="password"/>
+</label>
+<br>
+{% if blank_error2 %}
+  <p class='blank_error2'>{{ blank_error2 }}</p>
+{% endif %}
+
+<label>
+    Verify Password
+    <input type="text" name="pass-check"/>
+</label>
+<br>
+{% if blank_error3 %}
+  <p class='blank_error3'>{{ blank_error3 }}</p>
+{% endif %}
+
+<label>
+    Email (optional)
+    <input type="text" name="email"/>
+</label>
+<br>
+
+<input type="submit" value="Submit"/>
+
+</form>
+
+{% if error %}
+  <p class='error'>{{ error }}</p>
+{% endif %}
+
+
+{% endblock %}
