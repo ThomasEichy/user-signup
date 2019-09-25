@@ -14,49 +14,53 @@ def check_form():
     password = request.form["password"]
     pass_check = request.form["pass-check"]
     email = request.form["email"]
+    errors = 0
 
-    url = "/"
+    error1 = ""
+    error2 = ""
+    error3 = ""
+    error4 = ""
+    error5 = ""
+    error6 = ""
+    error7 = ""
 
     if (username.strip() == ""):
-        error = "Please enter your name."
-        url += "?blank_error1=" + error
-        return redirect("/?blank_error1=" + error)
+        error1 = "Please enter your name."
+        errors += 1
 
     if (password.strip() == ""):
-        error = "Please enter your password."
-        return redirect("/?blank_error2=" + error)
+        error2 = "Please enter your password."
+        errors += 1
 
     if (pass_check.strip() == ""):
-        error = "Please enter your password verification."
-        return redirect("/?blank_error3=" + error)
+        error3 = "Please enter your password verification."
+        errors += 1
     
     if (len(username) < 3) or (len(username) > 20) or (" " in username):
-        error = "Please enter a valid username. Within the range of 3 to 20 characters and contains no spaces"
-        return redirect("/?error=" + error) 
+        error4 = "Please enter a valid username. Within the range of 3 to 20 characters and contains no spaces"
+        errors += 1
 
     if (len(password) < 3) or (len(password) > 20) or (" " in password):
-        error = "Please enter a valid password Within the range of 3 to 20 characters and contains no spaces"
-        return redirect("/?error=" + error) 
+        error5 = "Please enter a valid password Within the range of 3 to 20 characters and contains no spaces"
+        errors += 1
 
     if (password != pass_check):
-        error = "Make sure your password and password verification are the same."
-        return redirect("/?error=" + error) 
+        error6 = "Make sure your password and password verification are the same."
+        errors += 1
 
     if (email != ""):
         if (len(email) < 3) or (len(email) > 20) or (" " in email) or ("@" not in email) or ("." not in email):
-            error = "Be sure to enter a valid email."
-            return redirect("/?error=" + error) 
-        
+            error7 = "Be sure to enter a valid email."
+            errors += 1
+
+    if (errors > 0):
+        return render_template('form.html', name_mem=username, email_mem=email, error1=error1, error2=error2, error3=error3, error4=error4, error5=error5, error6=error6, error7=error7)
 
     return render_template('success.html', name=username)
 
 
 @app.route("/")
 def index():
-    encoded_error = request.args.get("error")
-    encoded_blank1 = request.args.get("blank_error1")
-    encoded_blank2 = request.args.get("blank_error2")
-    encoded_blank3 = request.args.get("blank_error3")
-    return render_template("form.html", blank_error1=encoded_blank1, blank_error2=encoded_blank2, blank_error3=encoded_blank3, error=encoded_error)
+    return render_template("form.html")
 
 app.run()
